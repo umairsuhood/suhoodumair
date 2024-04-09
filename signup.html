@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.8/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="signup.css"> 
+    <link rel="stylesheet" href="header.css" type="text/css">
+</head>
+<body>
+<div>
+    <nav class="item navbar">
+        <a href="/index.html"><img class="nav-image" src="images/fav.png" alt=""></a>
+
+        <ul class="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wildlife.html">SL Wildlife</a></li>
+            <li><a href="animal.html">SL Animals</a></li>
+            <li><a href="dwc.html">DWC</a></li>
+            <li><a href="leopord.html">Leopard</a></li>
+            <li class="dropdown-trigger"><a href="">Animals</a>
+                <ul class="dropdown">
+                    <li><a href="yala.html">Yala</a></li>
+                    <li><a href="wilpattu.html">Wilpattu</a></li>
+                </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav><!-- end of the header -->
+</div>
+
+    <div class="design">
+    <div x-data="signupForm()" class="signup-container">
+        
+
+        <form @submit.prevent="signUp" class="FORM">
+
+            <h2>Sign Up</h2>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" x-model="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" x-model="password" required>
+            </div>
+            <div>
+                <button type="submit">Sign Up</button>
+            </div>
+        </form>
+        <template x-if="signUpError">
+            <p x-text="signUpErrorMessage" class="error"></p>
+        </template>
+    </div>
+</div>
+
+
+    <!-- ----------------------------------------------------------------------------------- -->
+    <!-- page footer -->
+    <footer class="footer" x-data="{ email: '', subscribe() { localStorage.setItem(this.email, JSON.stringify({ subscribed: true })); alert('Thank you for subscribing!'); this.email = ''; } }">
+        <section class="footer_outer"><!-- Inner area of the footer "the blurr" -->
+            <section class="footer_inner"><!-- Footer content - content of all 3 columns separated by this row -->
+                <section class="layout"><!-- 1st column of footer -->
+                    <section class="layout_item w-50">
+                        <section class="newsletter">
+                            <img class="footer-img" src="images/fav.png" alt="">
+                            <h3 class="footer-title">Ceylon Wildlife</h3>
+                            <b><em><p>Please come to our website for more interesting content about Sri Lankan Wildlife</p></em></b>
+                    
+                                <h2>Subscribe to Our Newsletter</h2>
+                                <form @submit.prevent="subscribe" class="newsletter-form">
+                                    <input type="email" x-model="email" placeholder="Enter your email" required>
+                                    <button type="submit">Subscribe</button>
+                                </form>
+                           
+                            
+                        </section>
+                    </section><!-- end of 1st column of footer -->
+  
+                    <!--2nd column of footer -->
+                    <section class="layout_item w-25">
+                        <section class="c-nav-tool">
+                        </section>
+                    </section><!-- end of 2nd column of footer -->
+  
+                    <!-- 3rd column of footer -->
+                    <section class="layout_item w-25">
+                        <section class="c-nav-tool">
+                            <h4 class="c-nav-tool_title">Support</h4>
+                            <ul class="c-nav-tool_list">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="wildlife.html">SL Wildlife</a></li>
+                                <li><a href="animal.html">SL Animals</a></li>
+                                <li><a href="dwc.html">DWC</a></li>
+                                <li><a href="leopord.html">Leopard</a></li>
+                                <li><a href="yala.html">Yala National Park</a></li>
+                                <li><a href="wilpattu.html">Wilpattu</a></li>
+                            </ul>
+                        </section>
+                    </section><!-- end of 3rd column of footer -->
+                </section><!-- end of footer section layout -->
+            </section><!-- end of inner footer section tag -->
+  
+            <section class="footer_copyright">
+                <p>&copy; 2022 The CEYLONE WILDLIFE Inc.</p>
+            </section>
+        </section><!-- end of outer footer section tag -->
+    </footer>
+  <!-- ----------------------------------------------------------------------------------- -->
+
+
+
+    <script>
+        function signupForm() {
+            return {
+                username: '',
+                password: '',
+                signUpError: false,
+                signUpErrorMessage: '',
+
+                signUp() {
+                    // Fetch existing users from localStorage
+                    const users = JSON.parse(localStorage.getItem('users')) || [];
+                    
+                    // Check if username already exists
+                    const userExists = users.some(user => user.username === this.username);
+                    if (userExists) {
+                        this.signUpError = true;
+                        this.signUpErrorMessage = 'Username already exists. Please choose a different one.';
+                        return;
+                    }
+
+                    // Add new user
+                    users.push({ username: this.username, password: this.password });
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Reset form and show success message or redirect
+                    this.username = '';
+                    this.password = '';
+                    alert('Sign up successful. You can now log in.');
+                    // Optionally redirect to login page
+                    // window.location.href = 'login.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
